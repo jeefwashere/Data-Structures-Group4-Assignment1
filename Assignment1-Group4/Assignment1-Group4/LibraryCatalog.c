@@ -8,6 +8,9 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 typedef struct Book 
 {
@@ -19,6 +22,7 @@ typedef struct Book
 } Book;
 
 // List of prototypes
+void menuList();
 void addBook(Book** head, int id, const char* title, const char* author, int publication_year);
 //void viewBooks(Book* head);
 //void updateBook(Book* head, int id);
@@ -34,10 +38,79 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 
 int main(void) 
 {
-	Book* head = NULL; // head node is set to NULL (must)
-	Book* tail = NULL; // tail node is set to NULL (must)
+	Book* head = NULL; // head node is set to NULL **here for now**
+ 	Book* tail = NULL; // tail node is set to NULL **here for now**
+
+	// variables for do-switch statement
+	int userChoice;
+
+	// do switch statement for the menu
+	while (true)
+	{
+		menuList();
+        printf("Enter your choice: ");
+        
+        // check if the user input is valid
+        if (scanf_s("%d", &userChoice) != 1) 
+		{
+            printf("Invalid choice, please user numbers (1 - 6) \n");
+            while (getchar() != '\n'); // clear buffer
+            continue;
+        }
+
+		switch (userChoice)
+		{
+			case 1:
+			{
+				// addBook
+			}
+			case 2:
+			{
+				// viewBooks
+			}
+			case 3:
+			{
+				// updateBook
+			}
+			case 4:
+			{
+				// deleteBook
+			}
+			case 5:
+			{
+				// searchBooks
+			}
+			case 6:
+			{
+				// exit
+				return 0;
+			}
+			default:
+			{
+				printf("Invalid choice, please use numbers (1 - 6) \n");
+				break;
+			}
+		}
+	}
 
 	return 0;
+}
+
+//
+// FUNCTION : addBook()
+// DESCRIPTION :
+// just to list the menu options
+// PARAMETERS : n/a
+// RETURNS : n/a (void)
+//
+void menuList() 
+{
+	printf("1. Add a book \n");
+	printf("2. View all books \n");
+	printf("3. Update a book \n");
+	printf("4. Delete a book \n");
+	printf("5. Search for a book \n");
+	printf("6. Exit \n");
 }
 
 //
@@ -69,11 +142,17 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 
 	// Book pointer to newBook, malloc is used to allocate memory for the new book to the heap
 	Book* newBook = (Book*)malloc(sizeof(Book));
+	// check if the newBook is NULL (in other words, to see newBook exists or not in the heap)
+	if (newBook == NULL) // if the newBook is NULL
+	{
+		printf("Failed to allocate memory. \n"); // print out that the memory allocation failed
+		return;
+	}
 
 	// the book details
 	newBook->id = id; // the newBook id is set to id which is passed in.
-	strcpy(newBook->title, title); // the newBook title is set to title which is passed in.
-	strcpy(newBook->author, author); // the newBook author is set to author which is passed in.
+	strcpy_s(newBook->title, sizeof(newBook->title), title); // the newBook title is set to title which is passed in.
+	strcpy_s(newBook->author, sizeof(newBook->author), author); // the newBook author is set to author which is passed in.
 	newBook->publication_year = publication_year; // the newBook publication_year is set to publication_year which is passed in.
 	newBook->next = NULL; // the newBook next is set to NULL
 
