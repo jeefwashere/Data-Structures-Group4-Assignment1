@@ -26,16 +26,17 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 //void searchBooks(Book* head, const char* title);
 
 // List of pointers:
-// Book* head --> head node
+// Book* head --> head node (beginning)
 // Book* current --> current node
+// Book* next --> next node
+// Book* tail --> tail node (end)
 // Book* newBook --> new book node
 
 int main(void) 
 {
-	// HEAD NODE (first book in the linked list)
+	// HEAD NODE (first book in the linked list) 
 	Book* head = NULL; // head node is set to NULL (must)
-
-	// user prompt to add a book
+	Book* tail = NULL; // tail node is set to NULL (must)
 
 	return 0;
 }
@@ -77,6 +78,7 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 	newBook->publication_year = publication_year; // the newBook publication_year is set to publication_year which is passed in.
 	newBook->next = NULL; // the newBook next is set to NULL
 
+	// this sends the new book to the end of the linked list*
 	// checks if next book HEAD NODE is NULL
 	if (*head == NULL)
 	{
