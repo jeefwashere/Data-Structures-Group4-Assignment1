@@ -34,7 +34,6 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 
 int main(void) 
 {
-	// HEAD NODE (first book in the linked list) 
 	Book* head = NULL; // head node is set to NULL (must)
 	Book* tail = NULL; // tail node is set to NULL (must)
 
