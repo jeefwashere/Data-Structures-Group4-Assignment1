@@ -235,7 +235,7 @@ void updateBook(Book* head, int id)
 		printf("The list is empty!\n");
 		return; // Exits function if so
 	}
-	
+
 	// Local Parameters
 	int chosenId = 0; // User-selected ID variable declaration
 	int updatedYear = 0; // New book ID variable declaration
