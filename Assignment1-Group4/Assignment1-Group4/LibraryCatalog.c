@@ -62,7 +62,34 @@ int main(void)
 		{
 			case 1:
 			{
-				// addBook
+				int id;
+				char title[100];
+				char author[100];
+				int publication_year;
+
+				printf("Enter the book ID: ");
+				scanf("%d", id);
+				while (getchar() != '\n'); // clear buffer
+
+				printf("Enter the book title: ");
+				fgets(title, sizeof(title), stdin);
+				title[strcspn(title, "\n")] = 0; // remove the newline character
+
+				printf("Enter the book author: ");
+				fgets(author, sizeof(author), stdin);
+				author[strcspn(author, "\n")] = 0; // remove the newline character
+
+				printf("Enter the publication year: ");
+				scanf("%d", publication_year);
+				while (getchar() != '\n'); // clear buffer
+
+				// while(getchar) vs title(strcspn)
+				// while(getchar) is to discard cahracters until a newline character is found
+				// title(strcspn) is used to locate the first occurrence of a character in a string in other words, it is used to find the newline character and remove it
+				// 
+
+				addBook(&head, id, title, author, publication_year);
+				break;
 			}
 			case 2:
 			{
