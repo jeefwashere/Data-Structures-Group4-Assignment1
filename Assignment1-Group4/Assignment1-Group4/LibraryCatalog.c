@@ -23,6 +23,8 @@ int main(void) {
 	Book* head = NULL;
 	int id = 0;
 
+	addBook(&head, 3, "Book 1", "Jeff Tieng", 2004);
+	addBook(&head, 001, "Book 2", "MJ", 2005);
 	updateBook(head, id);
 
 	return 0;
@@ -30,6 +32,51 @@ int main(void) {
 
 void addBook(Book** head, int id, const char* title, const char* author, int publication_year) {
 
+	// this will be to identify the current book in the linked list making sure it has a value
+	Book* current = *head; // current points to the head of the linked list (the first book in the list)
+
+	// iterate through the linked list to check if the book id already exists
+	while (current != NULL)
+	{
+		if (current->id == id) // if the current book id is equal to the id passed in (passed in = the value that is passed into the function)
+		{
+			printf("Book ID of %d, exists already. \n", id); // print out that the book with the id already exists
+			return;
+		}
+
+		current = current->next;
+	}
+
+	// Book pointer to newBook, malloc is used to allocate memory for the new book to the heap
+	Book* newBook = (Book*)malloc(sizeof(Book));
+	// check if the newBook is NULL (in other words, to see newBook exists or not in the heap)
+	if (newBook == NULL) // if the newBook is NULL
+	{
+		printf("Failed to allocate memory. \n"); // print out that the memory allocation failed
+		return;
+	}
+
+	// the book details
+	newBook->id = id; // the newBook id is set to id which is passed in.
+	strcpy_s(newBook->title, sizeof(newBook->title), title); // the newBook title is set to title which is passed in.
+	strcpy_s(newBook->author, sizeof(newBook->author), author); // the newBook author is set to author which is passed in.
+	newBook->publication_year = publication_year; // the newBook publication_year is set to publication_year which is passed in.
+	newBook->next = NULL; // the newBook next is set to NULL
+
+	// this sends the new book to the end of the linked list*
+	// checks if next book HEAD NODE is NULL
+	if (*head == NULL)
+	{
+		*head = newBook; // then the head node is set to the newBook-
+	}
+	else {
+		// Otherwise, find the end of the list and add the new book there
+		current = *head;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = newBook;
+	}
 }
 
 void viewBooks(Book* head) {
@@ -45,73 +92,63 @@ void updateBook(Book* head, int id) {
 	}
 
 	int chosenId = 0;
-	int newPublicationYear = 0;
-	char newBookTitle[100];
-	char newAuthor[100];
-	char yearInput[100];
-	char idInput[100];
-	bool done = false;
-	bool yearCheck = false;
+	int menuChoice = 0;
+	int updatedYear = 0;
+	char updatedBookTitle[100];
+	char updatedAuthor[100];
 
-	while (!done) {
+	printf("\nPlease enter a book ID: ");
+	while (scanf_s("%d", &chosenId) != 1 || chosenId < 0) {
 
-		printf("\nPlease enter a book ID: ");
-		fgets(idInput, sizeof(idInput), stdin);
+		printf("\nEnter a valid number.\n");
+	}
 
-		if (!sscanf_s(idInput, "%d", &chosenId)) {
+	while (getchar() != '\n');
 
-			printf("\nEnter a valid number.\n");
-			continue;
-		}
+	Book* current = head;
+	while (current != NULL) {
 
-		if (chosenId < 0) {
+		if (current->id == chosenId) {
 
-			printf("Please enter a valid ID.\n");
-			while (getchar() != '\n'); // clear buffer
-			continue;
-		}
+			printf("--------------------------------------------------------------------------------------\n");
+			printf("Current Book Details:\n");
+			printf("Book title: %s\n", current->title);
+			printf("Book author: %s\n", current->author);
+			printf("Book publication year: %d\n", current->publication_year);
+			printf("--------------------------------------------------------------------------------------\n");
+			printf("Updating Book ID: %d\n", chosenId);
 
-		Book* current = head;
-		while (current != NULL) {
+			printf("Enter new book title: ");
+			if (fgets(updatedBookTitle, sizeof(updatedBookTitle), stdin) != NULL) {
 
-			if (current->id == chosenId) {
-
-				printf("Enter new book title: ");
-				fgets(newBookTitle, sizeof(newBookTitle), stdin);
-				printf("\nEnter new author: ");
-
-				fgets(newAuthor, sizeof(newAuthor), stdin);
-				printf("\nEnter new publication year: ");
-
-				while (!yearCheck) {
-					fgets(yearInput, sizeof(yearInput), stdin);
-
-					if (!sscanf_s(yearInput, "%d", &newPublicationYear)) {
-
-						if (newPublicationYear < 0 || newPublicationYear > 2025) {
-
-							printf("Enter a valid year (0-2025): ");
-							while (getchar() != '\n'); // clear buffer
-							continue;
-						}
-					}
-
-					yearCheck = true;
-				}
-
-				strcpy_s(current->title, sizeof(current->title), newBookTitle);
-				strcpy_s(current->author, sizeof(current->author), newAuthor);
-				current->publication_year = newPublicationYear;
-				break;
+				updatedBookTitle[strcspn(updatedBookTitle, "\n")] = '\0';
 			}
 
+			printf("Enter new author: ");
+			if (fgets(updatedAuthor, sizeof(updatedAuthor), stdin) != NULL) {
 
-			current = current->next;
+				updatedAuthor[strcspn(updatedAuthor, "\n")] = '\0';
+			}
+
+			printf("Enter new publication year: ");
+			while (scanf_s("%d", &updatedYear) != 1 || updatedYear < 0 || updatedYear > 2025) {
+
+				printf("Invalid Year!\n");
+				while (getchar() != '\n');
+			}
+			while (getchar() != '\n');
+
+			strcpy_s(current->title, sizeof(current->title), updatedBookTitle);
+			strcpy_s(current->author, sizeof(current->author), updatedAuthor);
+			current->publication_year = updatedYear;
+			
+
+			printf("\nBook ID: %d details updated successfully!\n", chosenId);
+			return;
 		}
-
-		printf("ID does not exist.\n");
-		done = true;
+		current = current->next;
 	}
+	printf("Book ID: %d does not exist.\n", chosenId);
 }
 
 void deleteBook(Book** head, int id) {
