@@ -139,6 +139,7 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 			printf("Book ID of %d, exist arleady. \n", id); // print out that the book with the id already exists
 			return;
 		}
+		current = current->next; // current is set to the next book
 	}
 
 	// Book pointer to newBook, malloc is used to allocate memory for the new book to the heap
@@ -165,11 +166,11 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 	}
 	else // if the next book HEAD NODE is not NULL
 	{
-		while (current->next != NULL)
+		Book* tail = *head; // tail is set to the head node
 		{
-			current = current->next; // then the current (data) is set to the next book
+			tail = tail->next; // tail is set to the next book
 		}
-		current->next = newBook; // the current next is set to the newBook
+		tail->next = newBook; // the tail next is set to the newBook
 	}
 }
 
