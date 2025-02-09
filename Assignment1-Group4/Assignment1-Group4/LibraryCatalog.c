@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-typedef struct Book 
+typedef struct Book
 {
 	int id;
 	char title[100];
@@ -24,8 +24,8 @@ typedef struct Book
 // List of prototypes
 void menuList();
 void addBook(Book** head, int id, const char* title, const char* author, int publication_year);
-//void viewBooks(Book* head);
-//void updateBook(Book* head, int id);
+void viewBooks(Book* head);
+void updateBook(Book* head, int id);
 //void deleteBook(Book** head, int id);
 //void searchBooks(Book* head, const char* title);
 
@@ -36,73 +36,74 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 // Book* tail --> tail node (end)
 // Book* newBook --> new book node
 
-int main(void) 
+int main(void)
 {
-	Book* head = NULL; // head node is set to NULL **here for now**
- 	Book* tail = NULL; // tail node is set to NULL **here for now**
+	Book* head = NULL; // Head node is set to NULL **here for now**
+	Book* tail = NULL; // Tail node is set to NULL **here for now**
 
-	// variables for do-switch statement
+	// Variables for do-switch statement
 	int userChoice;
 
-	// do switch statement for the menu
+	// Do switch statement for the menu
 	while (true)
 	{
 		menuList();
-        printf("Enter your choice: ");
-        
-        // check if the user input is valid
-        if (scanf_s("%d", &userChoice) != 1) 
+		printf("Enter your choice: ");
+
+		// check if the user input is valid
+		if (scanf_s("%d", &userChoice) != 1)
 		{
-            printf("Invalid choice, please user numbers (1 - 6) \n");
-            while (getchar() != '\n'); // clear buffer
-            continue;
-        }
+			printf("Invalid choice, please user numbers (1 - 6) \n");
+			while (getchar() != '\n'); // clear buffer
+			continue;
+		}
 
 		switch (userChoice)
 		{
-			case 1:
-			{
-				// addBook
-			}
-			case 2:
-			{
-				// viewBooks
-			}
-			case 3:
-			{
-				// updateBook
-			}
-			case 4:
-			{
-				// deleteBook
-			}
-			case 5:
-			{
-				// searchBooks
-			}
-			case 6:
-			{
-				// exit
-				return 0;
-			}
-			default:
-			{
-				printf("Invalid choice, please use numbers (1 - 6) \n");
-				break;
-			}
+		case 1:
+		{
+			// addBook
 		}
+		case 2:
+		{
+			// viewBooks
+		}
+		case 3:
+		{
+			// updateBook
+		}
+		case 4:
+		{
+			// deleteBook
+		}
+		case 5:
+		{
+			// searchBooks
+		}
+		case 6:
+		{
+			// exit
+			return 0;
+		}
+		default:
+		{
+			printf("Invalid choice, please use numbers (1 - 6) \n");
+			break;
+		}
+		}
+		return 0;
 	}
-	return 0;
 }
 
 //
 // FUNCTION : addBook()
+// 
 // DESCRIPTION :
-// just to list the menu options
+// This function is used to display the menu options available to the user.
+// 
 // PARAMETERS : n/a
-// RETURNS : n/a (void)
 //
-void menuList() 
+void menuList()
 {
 	printf("1. Add a book \n");
 	printf("2. View all books \n");
@@ -114,17 +115,18 @@ void menuList()
 
 //
 // FUNCTION : addBook()
+// 
 // DESCRIPTION :
 // This function will add a new book to the linked list. As well as to check if the book id already exists.
+// 
 // PARAMETERS : 
-// Book** head - pointer pointing to the head of the linked list
-// int id - the id of the book
-// const char* title - the title of the book
-// const char* author - the author of the book
-// int publication_year - the publication year of the book
-// RETURNS : n/a (void)
+// Book** head			: pointer pointing to the head of the linked list
+// int id				: the id of the book
+// const char* title	: the title of the book
+// const char* author	: the author of the book
+// int publication_year : the publication year of the book
 //
-void addBook(Book** head, int id, const char* title, const char* author, int publication_year) 
+void addBook(Book** head, int id, const char* title, const char* author, int publication_year)
 {
 	// this will be to identify the current book in the linked list making sure it has a value
 	Book* current = *head; // current points to the head of the linked list (the first book in the list)
@@ -135,7 +137,7 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 		if (current->id == id) // if the current book id is equal to the id passed in (passed in = the value that is passed into the function)
 		{
 			printf("Book ID of %d, exist arleady. \n", id); // print out that the book with the id already exists
-			return; 
+			return;
 		}
 	}
 
@@ -173,97 +175,134 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 
 //
 // FUNCTION : viewBooks()
-// DESCRIPTION :
-// PARAMETERS : 
-// RETURNS :
+// 
+// DESCRIPTION : 
+// This function is used to view the book details present within the list
+// 
+// PARAMETERS :	
+// Book* head	: Used as a pointer to the head node of the list
+// int count	: Used as a counter for book number
 //
-void viewBooks(Book* head) 
+void viewBooks(Book* head)
 {
+	int count = 0; // Counter declaration
 
+	if (head == NULL) { // Checks if the list is empty
+
+		printf("The list is empty!\n");
+		return; // Exits function if so
+	}
+
+	Book* current = head; // Iterator declaration with initial value being the pointer to the head
+	while (current != NULL) { // While loop for looping through the list. Checks if current is null by setting current to the next node's address after every iteration.
+
+		count++; // Counter for book number
+		printf("--------------------------------------------------------------------------------------\n"); // Print statements for book details
+		printf("Book %d\n", count);
+		printf("ID: %d\n", current->id);
+		printf("Title: %s\n", current->title);
+		printf("Author: %s\n", current->author);
+		printf("Publication Year: %d\n", current->publication_year);
+
+		if (current->next == NULL) { // Checks if the next node is null
+
+			return; // Exits function if so
+		}
+
+		current = current->next; // Sets current to the address of the next node
+	}
 }
 
 //
 // FUNCTION :  updateBook()
+// 
 // DESCRIPTION :
+// This function is used to update the details of a book. The chosen book to be updated is selected by the user providing the matching book ID.
+// 
 // PARAMETERS : 
-// RETURNS :
+// Book* head					: Used as a pointer to the head node of the list
+// int id						: Struct variable for book ID
+// int chosenId					: The user-selected book ID
+// int updatedYear				: The user-selected book's new publication year
+// char updatedBookTitle[100]	: New title for the user-selected book
+// char updatedAuthor[100]		: New author for the user-selected author
 //
-void updateBook(Book* head, int id) 
+void updateBook(Book* head, int id)
 {
 
-	if (head == NULL) {
+	if (head == NULL) { // Checks if list is empty
 
 		printf("The list is empty!\n");
-		return;
+		return; // Exits function if so
 	}
 
-	int chosenId = 0;
-	int menuChoice = 0;
-	int updatedYear = 0;
-	char updatedBookTitle[100];
-	char updatedAuthor[100];
+	// Local Parameters
+	int chosenId = 0; // User-selected ID variable declaration
+	int updatedYear = 0; // New book ID variable declaration
+	char updatedBookTitle[100]; // New book title variable declaration
+	char updatedAuthor[100]; // New book author variable declaration
 
-	printf("\nPlease enter a book ID: ");
-	while (scanf_s("%d", &chosenId) != 1 || chosenId < 0) {
+	printf("\nPlease enter a book chosenID: ");
+	while (scanf_s("%d", &chosenId) != 1 || chosenId < 0) { // User-selected book ID user input. Checks if input was valid.
 
-		printf("\nEnter a valid number.\n");
+		printf("\nEnter a valid number.\n"); // Error statement if input was invalid
 	}
 
-	while (getchar() != '\n');
+	while (getchar() != '\n'); // Clears newline character from input buffer
 
-	Book* current = head;
-	while (current != NULL) {
+	Book* current = head; // Iterator declaration. Address of head is set as the initial value
+	while (current != NULL) { // Loop for iterating through list
 
-		if (current->id == chosenId) {
+		if (current->id == chosenId) { // Checks if book ID in list matches to user-selected book ID
 
-			printf("--------------------------------------------------------------------------------------\n");
+			printf("--------------------------------------------------------------------------------------\n"); // Print statements for book details
 			printf("Current Book Details:\n");
+			printf("Book ID: %d\n", current->id);
 			printf("Book title: %s\n", current->title);
 			printf("Book author: %s\n", current->author);
 			printf("Book publication year: %d\n", current->publication_year);
 			printf("--------------------------------------------------------------------------------------\n");
-			printf("Updating Book ID: %d\n", chosenId);
+			printf("Updating Book ID: %d\n", current->id);
 
 			printf("Enter new book title: ");
-			if (fgets(updatedBookTitle, sizeof(updatedBookTitle), stdin) != NULL) {
+			if (fgets(updatedBookTitle, sizeof(updatedBookTitle), stdin) != NULL) { // User input for updating the book's title
 
-				updatedBookTitle[strcspn(updatedBookTitle, "\n")] = '\0';
+				updatedBookTitle[strcspn(updatedBookTitle, "\n")] = '\0'; // Eliminates newline character from the new book title
 			}
 
 			printf("Enter new author: ");
-			if (fgets(updatedAuthor, sizeof(updatedAuthor), stdin) != NULL) {
+			if (fgets(updatedAuthor, sizeof(updatedAuthor), stdin) != NULL) { // User-input for updating the book's author
 
-				updatedAuthor[strcspn(updatedAuthor, "\n")] = '\0';
+				updatedAuthor[strcspn(updatedAuthor, "\n")] = '\0'; // Eliminates newline character from the new book title
 			}
 
 			printf("Enter new publication year: ");
-			while (scanf_s("%d", &updatedYear) != 1 || updatedYear < 0 || updatedYear > 2025) {
+			while (scanf_s("%d", &updatedYear) != 1 || updatedYear < 0 || updatedYear > 2025) { // User-input for updating book's publication year. Checks if book's new year is valid.
 
-				printf("Invalid Year!\n");
-				while (getchar() != '\n');
+				printf("Invalid Year!\n"); // Error statement if inputted year was invalid
+				while (getchar() != '\n'); // Eliminates newline character from input buffer
 			}
-			while (getchar() != '\n');
+			while (getchar() != '\n'); // Eliminates newline character from input buffer
 
-			strcpy_s(current->title, sizeof(current->title), updatedBookTitle);
-			strcpy_s(current->author, sizeof(current->author), updatedAuthor);
-			current->publication_year = updatedYear;
-			
+			strcpy_s(current->title, sizeof(current->title), updatedBookTitle); // Replaces the matching book's title with the user-updated title
+			strcpy_s(current->author, sizeof(current->author), updatedAuthor); // Replaces the matching book's author with the user-updated author
+			current->publication_year = updatedYear; // Sets value of matching book's year to the user-updated year
 
-			printf("\nBook ID: %d details updated successfully!\n", chosenId);
-			return;
+
+			printf("\nBook ID: %d details updated successfully!\n", chosenId); // Confirmation statement
+			return; // Exits function if successful
 		}
-		current = current->next;
+		current = current->next; // Sets iterator's address to the address of the next node
 	}
-	printf("Book ID: %d does not exist.\n", chosenId);
+	printf("Book ID: %d does not exist.\n", chosenId); // Error statement if no matching ID was found in the list
 }
 
 //
 // FUNCTION : deleteBook()
 // DESCRIPTION :
 // PARAMETERS : 
-// RETURNS :
 //
-void deleteBook(Book** head, int id) 
+void deleteBook(Book** head, int id)
 {
 
 }
@@ -272,9 +311,8 @@ void deleteBook(Book** head, int id)
 // FUNCTION : searchBooks()
 // DESCRIPTION :
 // PARAMETERS : 
-// RETURNS :
 //
-void searchBooks(Book* head, const char* title) 
+void searchBooks(Book* head, const char* title)
 {
 
 }
