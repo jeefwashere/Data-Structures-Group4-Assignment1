@@ -214,6 +214,22 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 			printf("Book ID of %d, exist arleady. \n", id); // print out that the book with the id already exists
 			return; 
 		}
+		else if (current->author == author) // if the current book author is equal to the author passed in (passed in = the value that is passed into the function)
+		{
+			printf("Book author of %s, exist arleady. \n", author); // print out that the book with the author already exists
+			return;
+		}
+		else if (current->title == title) // if the current book title is equal to the title passed in (passed in = the value that is passed into the function)
+		{
+			printf("Book title of %s, exist arleady. \n", title); // print out that the book with the title already exists
+			return;
+		}
+		else if (current->publication_year == publication_year) // if the current book publication year is equal to the publication year passed in (passed in = the value that is passed into the function)
+		{
+			printf("Book publication year of %d, exist arleady. \n", publication_year); // print out that the book with the publication year already exists
+			return;
+		}
+
 		current = current->next; // current is set to the next book
 	}
 
