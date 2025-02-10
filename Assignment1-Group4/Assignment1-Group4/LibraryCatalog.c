@@ -59,37 +59,114 @@ int main(void)
 		}
 
 		switch (userChoice)
-		{
-		case 1:
-		{
-			// addBook
-		}
-		case 2:
-		{
-			// viewBooks
-		}
-		case 3:
-		{
-			// updateBook
-		}
-		case 4:
-		{
-			// deleteBook
-		}
-		case 5:
-		{
-			// searchBooks
-		}
-		case 6:
-		{
-			// exit
-			return 0;
-		}
-		default:
-		{
-			printf("Invalid choice, please use numbers (1 - 6) \n");
-			break;
-		}
+    {
+			case 1:
+			{
+				int id;
+				char title[100];
+				char author[100];
+				int publication_year;
+
+				// check if the id is valid
+				bool validId = false;
+				while (!validId) // while the value of id is not valid
+				{
+					printf("Enter the book ID: ");
+					if (scanf_s("%d", &id) != 1)
+					{
+						printf("Invalid input, please enter a number. \n");
+						while (getchar() != '\n');
+					}
+					else
+					{
+						validId = true;
+					}
+				}
+				while (getchar != '\n');
+				
+				// check if the title is valid
+				while (true)
+				{
+					printf("Enter the book title: ");
+					if (fgets(title, sizeof(title), stdin) != NULL)
+					{
+						title[strcspn(title, "\n")] = 0;
+						if (strlen(title) == 0)
+						{
+							printf("Invalid input, please enter a title. \n");
+						}
+						else
+						{
+							break;
+						}
+					}
+				}
+
+				// check if the author is valid
+				while (true)
+				{
+					printf("Enter the book author: ");
+					if (fgets(author, sizeof(author), stdin) != NULL)
+					{
+						author[strcspn(author, "\n")] = 0;
+						if (strlen(author) == 0)
+						{
+							printf("Invalid input, please enter an author. \n");
+						}
+						else
+						{
+							break;
+						}
+					}
+				}
+				
+				// check if the publication year is valid
+				bool validYear = false;
+				while (!validYear)
+				{
+					printf("Enter publication year (0 - 2025): ");
+					if (scanf_s("%d", &publication_year) != 0 || publication_year < 0 || publication_year > 2025)
+					{
+						printf("Invalid input, please enter a number between 0 and 2025. \n");
+						while (getchar() != '\n');
+					}
+					else
+					{
+						validYear = true;	
+					}
+					while (getchar() != '\n');
+				}
+
+				addBook(&head, id, title, author, publication_year);
+				break;
+			}
+			case 2:
+			{
+				// viewBooks
+			}
+			case 3:
+			{
+				// updateBook
+			}
+			case 4:
+			{
+				// deleteBook
+			}
+			case 5:
+			{
+				// searchBooks
+			}
+			case 6:
+			{
+				// exit
+				return 0;
+			}
+			default:
+			{
+				printf("Invalid choice, please use numbers (1 - 6) \n");
+				break;
+			}
+
 		}
 		return 0;
 	}
@@ -139,6 +216,7 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 			printf("Book ID of %d, exist arleady. \n", id); // print out that the book with the id already exists
 			return;
 		}
+
 		current = current->next; // current is set to the next book
 	}
 
