@@ -68,8 +68,8 @@ int main(void)
 				int publication_year;
 
 				// check if the id is valid
-				bool valId = false;
-				while (!valId) // while the value of id is not valid
+				bool validId = false;
+				while (!validId) // while the value of id is not valid
 				{
 					printf("Enter the book ID: ");
 					if (scanf_s("%d", &id) != 1)
@@ -79,7 +79,7 @@ int main(void)
 					}
 					else
 					{
-						valId = true;
+						validId = true;
 					}
 				}
 				while (getchar != '\n');
