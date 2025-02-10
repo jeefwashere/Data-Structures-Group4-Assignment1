@@ -26,7 +26,7 @@ void menuList();
 void addBook(Book** head, int id, const char* title, const char* author, int publication_year);
 void viewBooks(Book* head);
 void updateBook(Book* head, int id);
-//void deleteBook(Book** head, int id);
+void deleteBook(Book** head, int id);
 //void searchBooks(Book* head, const char* title);
 
 // List of pointers:
@@ -36,6 +36,7 @@ void updateBook(Book* head, int id);
 // Book* tail --> tail node (end)
 // Book* newBook --> new book node
 
+
 int main(void)
 {
 	Book* head = NULL; // Head node is set to NULL **here for now**
@@ -43,6 +44,10 @@ int main(void)
 
 	// Variables for do-switch statement
 	int userChoice;
+
+	Book book[2] = { {101, "HELLO", "YES", 2005}, {102, "HI", "NO", 2005} };
+
+	deleteBook(&head, 101);
 
 	// Do switch statement for the menu
 	while (true)
@@ -299,11 +304,57 @@ void updateBook(Book* head, int id)
 
 //
 // FUNCTION : deleteBook()
-// DESCRIPTION :
+// DESCRIPTION : asks the user for a book ID and delete that book by its ID else if book is not found or list is empty, prompts user back
 // PARAMETERS : 
 //
 void deleteBook(Book** head, int id)
 {
+
+	// List of pointers:
+// Book* head --> head node (beginning)
+// Book* current --> current node
+// Book* next --> next node
+// Book* tail --> tail node (end)
+// Book* newBook --> new book node
+
+
+	if (*head == NULL) {
+
+		printf("The list is empty\n");
+		return;
+	}
+
+	Book* current = *head;
+
+	printf("\nPlease enter a book ID to delete: ");
+	while (scanf_s("%d", &id) != 1 ||  id < 0) {
+
+		printf("\nEnter a valid number.\n"); // Error statement if input was invalid
+	}	
+
+	if (current != NULL && current->id == id) {
+		*head = current->next; 
+		free(current);         
+		printf("Book with ID %d deleted.\n", id);
+		return;
+	}
+
+	while (current->next != NULL && current->next->id != id) {
+		current = current->next; 
+	}
+	
+
+	if (current->next == NULL) {
+		printf("Book does not exist\n");
+		return;
+	}
+
+	Book* removeBook = current->next;
+	current->next = current->next->next;
+	free(removeBook);
+	printf("Book successfully deleted.\n");
+
+
 
 }
 
