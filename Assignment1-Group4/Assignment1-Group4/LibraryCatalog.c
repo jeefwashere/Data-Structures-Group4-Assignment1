@@ -125,7 +125,7 @@ int main(void)
 				while (!validYear)
 				{
 					printf("Enter publication year (0 - 2025): ");
-					if (scanf_s("%d", &publication_year) != || publication_year < 0 || publication_year > 2025)
+					if (scanf_s("%d", &publication_year) != 0 || publication_year < 0 || publication_year > 2025)
 					{
 						printf("Invalid input, please enter a number between 0 and 2025. \n");
 						while (getchar() != '\n');
