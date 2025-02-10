@@ -43,6 +43,10 @@ int main(void)
 
 	// Variables for do-switch statement
 	int userChoice;
+	int id;
+	char title[100];
+	char author[100];
+	int publication_year;
 
 	// Do switch statement for the menu
 	while (true)
@@ -59,113 +63,67 @@ int main(void)
 		}
 
 		switch (userChoice)
-    {
-			case 1:
-			{
-				int id;
-				char title[100];
-				char author[100];
-				int publication_year;
+		{
+		case 1:
+		{
 
-				// check if the id is valid
-				bool validId = false;
-				while (!validId) // while the value of id is not valid
-				{
-					printf("Enter the book ID: ");
-					if (scanf_s("%d", &id) != 1)
-					{
-						printf("Invalid input, please enter a number. \n");
-						while (getchar() != '\n');
-					}
-					else
-					{
-						validId = true;
-					}
-				}
-				while (getchar != '\n');
-				
-				// check if the title is valid
-				while (true)
-				{
-					printf("Enter the book title: ");
-					if (fgets(title, sizeof(title), stdin) != NULL)
-					{
-						title[strcspn(title, "\n")] = 0;
-						if (strlen(title) == 0)
-						{
-							printf("Invalid input, please enter a title. \n");
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
+			// check if the id is valid
+			printf("Enter the book ID: ");
+			while (scanf_s("%d", &id) != 1)
+			{
+				printf("Invalid input, please enter a number. \n");
+				while (getchar() != '\n');
+			}
+			while (getchar != '\n');
 
-				// check if the author is valid
-				while (true)
-				{
-					printf("Enter the book author: ");
-					if (fgets(author, sizeof(author), stdin) != NULL)
-					{
-						author[strcspn(author, "\n")] = 0;
-						if (strlen(author) == 0)
-						{
-							printf("Invalid input, please enter an author. \n");
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-				
-				// check if the publication year is valid
-				bool validYear = false;
-				while (!validYear)
-				{
-					printf("Enter publication year (0 - 2025): ");
-					if (scanf_s("%d", &publication_year) != 0 || publication_year < 0 || publication_year > 2025)
-					{
-						printf("Invalid input, please enter a number between 0 and 2025. \n");
-						while (getchar() != '\n');
-					}
-					else
-					{
-						validYear = true;	
-					}
-					while (getchar() != '\n');
-				}
+			// Ask for Title
+			printf("Enter the book title: ");
+			fgets(title, sizeof(title), stdin);
+			title[strcspn(title, "\n")] = '\0';
 
-				addBook(&head, id, title, author, publication_year);
-				break;
-			}
-			case 2:
+			// Ask for Author
+			printf("Enter the book author: ");
+			fgets(author, sizeof(author), stdin);
+			author[strcspn(author, "\n")] = '\0';
+
+			// Check if publication year is valid
+			printf("Enter publication year (0 - 2025): ");
+			while (scanf_s("%d", &publication_year) != 0 || publication_year < 0 || publication_year > 2025)
 			{
-				// viewBooks
+				printf("Invalid input, please enter a number between 0 and 2025. \n");
+				while (getchar() != '\n');
 			}
-			case 3:
-			{
-				// updateBook
-			}
-			case 4:
-			{
-				// deleteBook
-			}
-			case 5:
-			{
-				// searchBooks
-			}
-			case 6:
-			{
-				// exit
-				return 0;
-			}
-			default:
-			{
-				printf("Invalid choice, please use numbers (1 - 6) \n");
-				break;
-			}
+			while (getchar() != '\n');
+
+			addBook(&head, id, title, author, publication_year);
+			break;
+		}
+		case 2:
+		{
+			// viewBooks
+		}
+		case 3:
+		{
+			// updateBook
+		}
+		case 4:
+		{
+			// deleteBook
+		}
+		case 5:
+		{
+			// searchBooks
+		}
+		case 6:
+		{
+			// exit
+			return 0;
+		}
+		default:
+		{
+			printf("Invalid choice, please use numbers (1 - 6) \n");
+			break;
+		}
 
 		}
 		return 0;
@@ -231,8 +189,13 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 
 	// the book details
 	newBook->id = id; // the newBook id is set to id which is passed in.
+
 	strcpy_s(newBook->title, sizeof(newBook->title), title); // the newBook title is set to title which is passed in.
+	newBook->title[sizeof(newBook->title) - 1] = '\0';  // Null termination
+
 	strcpy_s(newBook->author, sizeof(newBook->author), author); // the newBook author is set to author which is passed in.
+	newBook->author[sizeof(newBook->author) - 1] = '\0'; // Null termination
+
 	newBook->publication_year = publication_year; // the newBook publication_year is set to publication_year which is passed in.
 	newBook->next = NULL; // the newBook next is set to NULL
 
@@ -245,9 +208,11 @@ void addBook(Book** head, int id, const char* title, const char* author, int pub
 	else // if the next book HEAD NODE is not NULL
 	{
 		Book* tail = *head; // tail is set to the head node
-		{
-			tail = tail->next; // tail is set to the next book
+
+		while (tail->next != NULL) {
+			tail = tail->next;
 		}
+
 		tail->next = newBook; // the tail next is set to the newBook
 	}
 }
